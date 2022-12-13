@@ -1,8 +1,8 @@
 {
-  "name": "well-book",
+  "name": "wellbook",
   "version": "0.0.1-SNAPSHOT",
   "private": true,
-  "description": "Description for WellBook",
+  "description": "Description for wellbook",
   "license": "UNLICENSED",
   "scripts": {
     "app:start": "./mvnw",

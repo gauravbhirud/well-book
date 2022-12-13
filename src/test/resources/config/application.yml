@@ -15,7 +15,7 @@
 
 spring:
   application:
-    name: WellBook
+    name: wellbook
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: test
@@ -33,13 +33,13 @@ spring:
     basename: i18n/messages
   task:
     execution:
-      thread-name-prefix: well-book-task-
+      thread-name-prefix: wellbook-task-
       pool:
         core-size: 1
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: well-book-scheduling-
+      thread-name-prefix: wellbook-scheduling-
       pool:
         size: 20
   thymeleaf:
@@ -56,9 +56,9 @@ server:
 # ===================================================================
 jhipster:
   clientApp:
-    name: 'wellBookApp'
+    name: 'wellbookApp'
   mail:
-    from: WellBook@localhost.com
+    from: wellbook@localhost.com
     base-url: http://127.0.0.1:8080
   logging:
     # To test json console appender
@@ -72,7 +72,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: YTMwZTJmZDQwZjFkMTE5NTY4MWE1MTAxOTg0Y2Q2ZDBhNDM0ZmQyNzljYjMxY2FiNDY3M2NiY2QwYzc5MWUxNThiZGVlNzI1ZjNhOTdhMGJlZTUwN2Q0ZmRiZjRkNGRhZWM4MzVjOTViNDIwYTkyMWNlYzgzNjBhZGU2YzNiM2E=
+        base64-secret: Mzg4MGI0YjI2YjRkNDQxY2VhYjJhZmM4MTIyZjNlMDFkODU3OTk3ZDU1ZGFkYjY4N2QzY2ZhNjhhMGY1YWE0NGI4OTVjOGFkOGFjMjMyOThmNGEzMTFhOTI5Y2M0MjhhN2EzZDZhODM3MWY5ZDkwY2ZhMzQwNmM4MzMyZjQ0Zjg=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
 

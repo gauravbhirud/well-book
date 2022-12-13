@@ -3,7 +3,7 @@ package com.mnt.wellbook.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Properties specific to Well Book.
+ * Properties specific to Wellbook.
  * <p>
  * Properties are configured in the {@code application.yml} file.
  * See {@link tech.jhipster.config.JHipsterProperties} for a good example.

@@ -1,6 +1,6 @@
 package com.mnt.wellbook;
 
-import com.mnt.wellbook.WellBookApp;
+import com.mnt.wellbook.WellbookApp;
 import com.mnt.wellbook.config.AsyncSyncConfiguration;
 import com.mnt.wellbook.config.EmbeddedSQL;
 import java.lang.annotation.ElementType;
@@ -15,7 +15,7 @@ import org.springframework.test.annotation.DirtiesContext;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest(classes = { WellBookApp.class, AsyncSyncConfiguration.class })
+@SpringBootTest(classes = { WellbookApp.class, AsyncSyncConfiguration.class })
 @EmbeddedSQL
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public @interface IntegrationTest {

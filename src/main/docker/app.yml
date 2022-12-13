@@ -17,7 +17,7 @@ services:
   wellbook-mysql:
     image: mysql:8.0.30
     # volumes:
-    #   - ~/volumes/jhipster/WellBook/mysql/:/var/lib/mysql/
+    #   - ~/volumes/jhipster/wellbook/mysql/:/var/lib/mysql/
     volumes:
       - ./config/mysql:/etc/mysql/conf.d
     environment:
