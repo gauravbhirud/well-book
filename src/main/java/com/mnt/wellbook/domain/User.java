@@ -2,6 +2,7 @@ package com.mnt.wellbook.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mnt.wellbook.config.Constants;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -80,6 +81,10 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     @Column(name = "reset_date")
     private Instant resetDate = null;
+    
+    @Column(name = "jwt_token")
+    private String jwtToken;
+    
 
     @JsonIgnore
     @ManyToMany
@@ -195,6 +200,14 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+    
+    public String getJwtToken() {
+        return jwtToken;
+    }
+
+    public void setJwtToken(String jwtToken) {
+        this.jwtToken = jwtToken;
     }
 
     @Override
