@@ -3,6 +3,7 @@ package com.mnt.wellbook.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mnt.wellbook.config.Constants;
+import java.time.LocalDateTime;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -57,6 +58,20 @@ public class Client {
     @JoinColumn(name="user_id")
     private User user;
     
+    @Column(name = "create_datetime")
+    private LocalDateTime createDatetime;
+    
+    @Column(name = "update_datetime")
+    private LocalDateTime updateDatetime;
+    
+    @Column(name = "register_status")
+    private String registerStatus;
+    
+    @Column(name = "active_status")
+    private String activeStatus;
+    
+    @Column(name = "role")
+    private String role;
     
 
     public Long getId() {
@@ -114,6 +129,48 @@ public class Client {
     public void setUser(User user) {
         this.user = user;
     }
+    
+    public LocalDateTime getCreateDatetime() {
+        return createDatetime;
+    }
+
+    public void setCreateDatetime(LocalDateTime createDatetime) {
+        this.createDatetime = createDatetime;
+    }
+    
+    public LocalDateTime getUpdateDatetime() {
+        return updateDatetime;
+    }
+
+    public void setUpdateDatetime(LocalDateTime updateDatetime) {
+        this.updateDatetime = updateDatetime;
+    }
+    
+    public String getRegisterStatus() {
+        return registerStatus;
+    }
+
+    public void setRegisterStatus(String registerStatus) {
+        this.registerStatus = registerStatus;
+    }
+    
+    public String getActiveStatus() {
+        return activeStatus;
+    }
+
+    public void setActiveStatus(String activeStatus) {
+        this.activeStatus = activeStatus;
+    }
+    
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    
+    
     
     // prettier-ignore
     @Override

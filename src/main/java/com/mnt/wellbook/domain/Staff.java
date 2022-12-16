@@ -3,6 +3,7 @@ package com.mnt.wellbook.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mnt.wellbook.config.Constants;
+import java.time.LocalDateTime;
 
 
 import java.io.Serializable;
@@ -25,8 +26,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 /**
  * An authority (a security role) used by Spring Security.
  */
-
-
 @Entity
 @Table(name = "tbl_staff")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -60,6 +59,25 @@ public class Staff  {
     @ManyToOne( cascade = { CascadeType.PERSIST, CascadeType.MERGE}, targetEntity = Client.class)
     @JoinColumn(name = "client_id")
     private Client client;
+    
+    @Column(name = "create_datetime")
+    private LocalDateTime createDatetime;
+    
+    @Column(name = "update_datetime")
+    private LocalDateTime updateDatetime;
+    
+    @Column(name = "register_status")
+    private String registerStatus;
+    
+    @Column(name = "active_status")
+    private String activeStatus;
+    
+    @Column(name = "role")
+    private String role;
+    
+    
+    @Column(name = "testing")
+    private String testing;
     
     public Long getId() {
         return id;
@@ -117,6 +135,47 @@ public class Staff  {
     public void setClient(Client client) {
         this.client = client;
     }
+    
+    public LocalDateTime getCreateDatetime() {
+        return createDatetime;
+    }
+
+    public void setCreateDatetime(LocalDateTime createDatetime) {
+        this.createDatetime = createDatetime;
+    }
+    
+    public LocalDateTime getUpdateDatetime() {
+        return updateDatetime;
+    }
+
+    public void setUpdateDatetime(LocalDateTime updateDatetime) {
+        this.updateDatetime = updateDatetime;
+    }
+    
+    public String getRegisterStatus() {
+        return registerStatus;
+    }
+
+    public void setRegisterStatus(String registerStatus) {
+        this.registerStatus = registerStatus;
+    }
+    
+    public String getActiveStatus() {
+        return activeStatus;
+    }
+
+    public void setActiveStatus(String activeStatus) {
+        this.activeStatus = activeStatus;
+    }
+    
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    
 
 
     // prettier-ignore
