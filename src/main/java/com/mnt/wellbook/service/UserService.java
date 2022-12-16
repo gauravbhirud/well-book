@@ -9,6 +9,9 @@ import com.mnt.wellbook.security.AuthoritiesConstants;
 import com.mnt.wellbook.security.SecurityUtils;
 import com.mnt.wellbook.service.dto.AdminUserDTO;
 import com.mnt.wellbook.service.dto.UserDTO;
+
+import java.time.LocalDateTime;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -24,6 +27,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.security.RandomUtil;
 
+import com.mnt.wellbook.repository.ClientRepository;
+import com.mnt.wellbook.repository.StaffRepository;
+
+import com.mnt.wellbook.web.rest.vm.ManagedUserVM;
+import com.mnt.wellbook.service.KeyService;
+
+
+import com.mnt.wellbook.domain.Key;
+import javax.validation.Valid;
+
 /**
  * Service class for managing users.
  */
@@ -34,23 +47,37 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
+    
+    private final ClientRepository clientRepository;
+    
+    private final StaffRepository staffRepository;
+    
+    private final KeyService keyService;
+    
 
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
+    
 
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager
+        CacheManager cacheManager,
+        ClientRepository clientRepository,
+        StaffRepository staffRepository,
+        KeyService keyService
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.clientRepository = clientRepository;
+        this.staffRepository=staffRepository;
+        this.keyService= keyService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -321,5 +348,42 @@ public class UserService {
         if (user.getEmail() != null) {
             Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
         }
+    }
+    
+    
+    public void registerClient(@Valid ManagedUserVM managedUserVM, Key key) {
+        Set<String> role = new HashSet<String>();
+        role.add("ROLE_CLIENT");
+        managedUserVM.setAuthorities(role);
+        User user = registerUser(managedUserVM, managedUserVM.getPassword());
+
+        clientRepository.findOneByEmail(user.getEmail()).ifPresent(client ->{
+            client.setUser(user);
+            client.setRegisterStatus("Register");
+            client.setActiveStatus("active");
+            client.setUpdateDatetime(LocalDateTime.now());
+            
+//            Notification noti2 = notificationService.saveNotification(client.getId(), client.getUser().getId(), "ROLE_CLIENT", "ROLE_USER", "Successfully Registered", client.getFirstName() +" "+ client.getLastName() +" has been Successfully Registered ");
+            keyService.updateKeyStatus(managedUserVM.getAlphanumericKey());
+        });
+
+    }
+    
+    public void registerStaff(@Valid ManagedUserVM managedUserVM, Key key) {
+        Set<String> role = new HashSet<String>();
+        role.add("ROLE_STAFF");
+        managedUserVM.setAuthorities(role);
+        User user = registerUser(managedUserVM, managedUserVM.getPassword());
+
+        staffRepository.findOneByEmail(user.getEmail()).ifPresent(staff ->{
+        	staff.setUser(user);
+        	staff.setRegisterStatus("Register");
+        	staff.setActiveStatus("active");
+        	staff.setUpdateDatetime(LocalDateTime.now());
+            
+//            Notification noti2 = notificationService.saveNotification(client.getId(), client.getUser().getId(), "ROLE_CLIENT", "ROLE_USER", "Successfully Registered", client.getFirstName() +" "+ client.getLastName() +" has been Successfully Registered ");
+            keyService.updateKeyStatus(managedUserVM.getAlphanumericKey());
+        });
+
     }
 }

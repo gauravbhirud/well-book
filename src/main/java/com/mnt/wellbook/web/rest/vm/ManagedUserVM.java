@@ -1,6 +1,8 @@
 package com.mnt.wellbook.web.rest.vm;
 
 import com.mnt.wellbook.service.dto.AdminUserDTO;
+
+
 import javax.validation.constraints.Size;
 
 /**
@@ -14,6 +16,8 @@ public class ManagedUserVM extends AdminUserDTO {
 
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
+    
+    private String alphanumericKey;
 
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
@@ -25,6 +29,14 @@ public class ManagedUserVM extends AdminUserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public String getAlphanumericKey() {
+        return alphanumericKey;
+    }
+
+    public void setAlphanumericKey(String alphanumericKey) {
+        this.alphanumericKey = alphanumericKey;
     }
 
     // prettier-ignore

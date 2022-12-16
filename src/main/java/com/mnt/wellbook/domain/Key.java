@@ -49,6 +49,9 @@ public class Key  {
     @Column(name = "used_status")
     private String usedStatus;
     
+    @Column(name = "email")
+    private String email;
+    
     
     public Long getId() {
         return id;
@@ -98,6 +101,14 @@ public class Key  {
 
     public void setUsedStatus(String usedStatus) {
         this.usedStatus = usedStatus;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
 
