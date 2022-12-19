@@ -89,10 +89,20 @@ management:
         request:
           autotime:
             enabled: true
+            
+file:
+  upload:
+    location: /Users/uploads
 
 spring:
   application:
     name: wellbook
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
   profiles:
     # The commented value for `active` can be replaced with valid Spring profiles to load.
     # Otherwise, it will be filled in by maven when building the JAR file

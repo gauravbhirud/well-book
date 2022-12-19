@@ -5,11 +5,19 @@ import com.mnt.wellbook.domain.User;
 import com.mnt.wellbook.repository.UserRepository;
 import com.mnt.wellbook.security.AuthoritiesConstants;
 import com.mnt.wellbook.service.MailService;
+
+import java.io.IOException;
 import com.mnt.wellbook.service.UserService;
 import com.mnt.wellbook.service.dto.AdminUserDTO;
 import com.mnt.wellbook.web.rest.errors.BadRequestAlertException;
 import com.mnt.wellbook.web.rest.errors.EmailAlreadyUsedException;
 import com.mnt.wellbook.web.rest.errors.LoginAlreadyUsedException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,15 +50,25 @@ import com.mnt.wellbook.web.rest.vm.ManagedUserVM;
 
 import com.mnt.wellbook.repository.KeyRepository;
 
+
 import com.mnt.wellbook.domain.Key;
 
 import com.mnt.wellbook.web.rest.errors.InvalidPasswordException;
 import com.mnt.wellbook.web.rest.errors.BadRequestAlertException;
 
+import com.mnt.wellbook.service.FileStorageService;
+
+import com.mnt.wellbook.domain.Document;
+
+import com.mnt.wellbook.service.IFileSytemStorage;
 
 @RestController
 @RequestMapping("/api")
 public class RegisterResource {
+	
+	@Autowired
+    IFileSytemStorage storageService;
+
 	
 	@Autowired
 	KeyRepository keyRepository;
@@ -60,6 +78,7 @@ public class RegisterResource {
 	
 	@Autowired
     UserService userService;
+	
 
       /**
      * {@code POST  company-register} : register the freight Forwarding Company by self.
@@ -68,6 +87,8 @@ public class RegisterResource {
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      */
     @PostMapping("/client/register")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") "+
+    		" || hasAuthority(\"" + AuthoritiesConstants.CLIENT + "\")")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> clientRegister(@Valid @RequestBody ManagedUserVM managedUserVM) {
     	
@@ -96,6 +117,8 @@ public class RegisterResource {
     
     
     @PostMapping("/staff/register")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") "+
+    		" || hasAuthority(\"" + AuthoritiesConstants.STAFF + "\")")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> staffRegister(@Valid @RequestBody ManagedUserVM managedUserVM) {
     	
@@ -128,6 +151,33 @@ public class RegisterResource {
             password.length() < ManagedUserVM.PASSWORD_MIN_LENGTH ||
             password.length() > ManagedUserVM.PASSWORD_MAX_LENGTH
         );
+    }
+    
+    
+    @PostMapping("/uploadfile")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") "+
+    		" || hasAuthority(\"" + AuthoritiesConstants.CLIENT + "\")")
+    public ResponseEntity<String> uploadFile (@RequestParam("file") MultipartFile file,@RequestParam("sectionId") Long sectionId) {
+    	    
+    	    String upfile = storageService.saveFile(file,sectionId);
+
+            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/download/")
+                    .path(upfile)
+                    .toUriString();
+            
+            return ResponseEntity.status(HttpStatus.OK).body("File uploaded with success!");
+       
+    }
+    
+    
+    @GetMapping("/getfile/{id}")
+    public ResponseEntity<Resource> getFile(@PathVariable Long id) {
+      Resource resource = storageService.loadFile(id);
+
+      return ResponseEntity.ok()
+              .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+              .body(resource);
     }
 
 

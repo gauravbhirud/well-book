@@ -1,6 +1,7 @@
 package com.mnt.wellbook;
 
 import com.mnt.wellbook.config.ApplicationProperties;
+import com.mnt.wellbook.config.FileUploadProperties;
 import com.mnt.wellbook.config.CRLFLogConverter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -20,7 +21,7 @@ import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
+@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class,FileUploadProperties.class })
 public class WellbookApp {
 
     private static final Logger log = LoggerFactory.getLogger(WellbookApp.class);
