@@ -20,6 +20,8 @@ public interface KeyRepository extends JpaRepository<Key, Long> {
 
     
     Optional<Key> findOneByAlphanumericKey(String alphanumericKey);
+    
+    Key findOneByAlphanumericKeyIgnoreCase(String alphanumericKey);
 
 	
 }

@@ -10,8 +10,11 @@ import com.mnt.wellbook.service.dto.AdminUserDTO;
 import com.mnt.wellbook.web.rest.errors.BadRequestAlertException;
 import com.mnt.wellbook.web.rest.errors.EmailAlreadyUsedException;
 import com.mnt.wellbook.web.rest.errors.LoginAlreadyUsedException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 import java.util.Collections;
 import javax.validation.Valid;
@@ -19,6 +22,7 @@ import javax.validation.constraints.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -43,12 +47,16 @@ import com.mnt.wellbook.domain.Key;
 import com.mnt.wellbook.web.rest.errors.InvalidPasswordException;
 import com.mnt.wellbook.web.rest.errors.BadRequestAlertException;
 
+
 @RestController
 @RequestMapping("/api")
 public class RegisterResource {
 	
 	@Autowired
 	KeyRepository keyRepository;
+	
+	@Value("${jhipster.clientApp.name}")
+    private String applicationName;
 	
 	@Autowired
     UserService userService;
@@ -72,7 +80,7 @@ public class RegisterResource {
             throw new BadRequestAlertException("key not found", "Client", managedUserVM.getEmail().toString());
         }
         
-        if(key.getUsedStatus.equals("used")) {
+        if(key.getUsedStatus().equals("used")) {
         	throw new BadRequestAlertException("key already used", "Client", managedUserVM.getAlphanumericKey().toString());
         }
         
@@ -80,6 +88,9 @@ public class RegisterResource {
             throw new BadRequestAlertException("Register Email not match", "Client", managedUserVM.getEmail().toString());
         }
         userService.registerClient(managedUserVM, key);
+        
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert(applicationName, "Client Register Successfull ", "Client")).build();
+
       
     }
     
@@ -92,12 +103,12 @@ public class RegisterResource {
             throw new InvalidPasswordException();
         }
     	
-    	Key key = keyRepository.findOneByAlphanumericKeyIgnoreCase(managedUserVM.getAlphanumericKey());
+    	Key key = keyRepository.findOneByAlphanumericKey(managedUserVM.getAlphanumericKey()).get();
         if(key == null){
             throw new BadRequestAlertException("key not found", "Staff", managedUserVM.getEmail().toString());
         }
         
-        if(key.getUsedStatus.equals("used")) {
+        if(key.getUsedStatus().equals("used")) {
         	throw new BadRequestAlertException("key already used", "Staff", managedUserVM.getAlphanumericKey().toString());
         }
         
@@ -105,6 +116,8 @@ public class RegisterResource {
             throw new BadRequestAlertException("Register Email not match", "Staff", managedUserVM.getEmail().toString());
         }
         userService.registerStaff(managedUserVM, key);
+
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert(applicationName, "Staff Register Successfull ", "Staff")).build();
        
 
     }
