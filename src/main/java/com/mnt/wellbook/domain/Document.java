@@ -51,6 +51,9 @@ public class Document  {
     @Column(name = "path")
     private String path;
     
+    @Column(name = "remark")
+    private String remark;
+    
     public Long getId() {
         return id;
     }
@@ -100,6 +103,14 @@ public class Document  {
       public void setPath(String path) {
         this.path = path;
       }
+      
+      public String getRemark() {
+          return remark;
+        }
+
+        public void setRemark(String remark) {
+          this.remark = remark;
+        }
 
 
     // prettier-ignore
@@ -108,6 +119,7 @@ public class Document  {
         return "Document{" +
             "uploadedBy='" + uploadedBy + '\'' +
             "path='" + path + '\'' +
+             "remark='" + remark + '\'' +
             "}";
     }
 }

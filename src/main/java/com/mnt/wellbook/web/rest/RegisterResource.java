@@ -87,8 +87,6 @@ public class RegisterResource {
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      */
     @PostMapping("/client/register")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") "+
-    		" || hasAuthority(\"" + AuthoritiesConstants.CLIENT + "\")")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> clientRegister(@Valid @RequestBody ManagedUserVM managedUserVM) {
     	
@@ -117,8 +115,6 @@ public class RegisterResource {
     
     
     @PostMapping("/staff/register")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") "+
-    		" || hasAuthority(\"" + AuthoritiesConstants.STAFF + "\")")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> staffRegister(@Valid @RequestBody ManagedUserVM managedUserVM) {
     	
@@ -154,31 +150,6 @@ public class RegisterResource {
     }
     
     
-    @PostMapping("/uploadfile")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") "+
-    		" || hasAuthority(\"" + AuthoritiesConstants.CLIENT + "\")")
-    public ResponseEntity<String> uploadFile (@RequestParam("file") MultipartFile file,@RequestParam("sectionId") Long sectionId) {
-    	    
-    	    String upfile = storageService.saveFile(file,sectionId);
-
-            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/api/download/")
-                    .path(upfile)
-                    .toUriString();
-            
-            return ResponseEntity.status(HttpStatus.OK).body("File uploaded with success!");
-       
-    }
-    
-    
-    @GetMapping("/getfile/{id}")
-    public ResponseEntity<Resource> getFile(@PathVariable Long id) {
-      Resource resource = storageService.loadFile(id);
-
-      return ResponseEntity.ok()
-              .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-              .body(resource);
-    }
 
 
 

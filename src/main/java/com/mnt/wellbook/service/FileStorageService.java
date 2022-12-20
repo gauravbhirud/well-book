@@ -64,7 +64,7 @@ public class FileStorageService implements IFileSytemStorage{
 
   
   @Override
-  public String saveFile(MultipartFile file,Long sectionId) {
+  public String saveFile(MultipartFile file,Long sectionId,String remark) {
       
 	  try {
           String fileName = file.getOriginalFilename();
@@ -80,6 +80,7 @@ public class FileStorageService implements IFileSytemStorage{
           document.setUploadedBy("Admin");
           document.setDocumentName(fileName);
           document.setPath(dfile.toString());
+          document.setRemark(remark);
           
           fileDBRepository.save(document);
           
