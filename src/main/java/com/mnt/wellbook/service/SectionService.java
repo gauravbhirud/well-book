@@ -63,24 +63,30 @@ public class SectionService {
     }
 	
 	
-	    public Map<String, Object> createSection(String sectionName,String description,Long clientId,Long staffId) {
-	    	Section section=new Section();
-	    	section.setName(sectionName);
-	    	section.setDescription(description);
-	    	Client client=clientRepository.findById(clientId).get();
-	    	section.setClient(client);
+	    public List<Map<String, Object>> createSection(ArrayList<String> sectionNameList,String description,Long clientId,Long staffId) {
 	    	
-	    	Staff staff=staffRepository.findById(staffId).get();
-	    	section.setStaff(staff);
+	    	List<Map<String, Object>> finalList = new ArrayList<>();
 	    	
+	    	for(String sectionName : sectionNameList) {
+		    	Section section=new Section();
+		    	section.setName(sectionName);
+		    	section.setDescription(description);
+		    	Client client=clientRepository.findById(clientId).get();
+		    	section.setClient(client);
+		    	
+		    	Staff staff=staffRepository.findById(staffId).get();
+		    	section.setStaff(staff);
+		    	
+		    	
+		    	section=sectionRepository.save(section);
+		    	
+		    	Map<String, Object> objMap = new LinkedHashMap<String, Object>();
+	            objMap.put("id", section.getSectionId());
+	            objMap.put("sectionName", section.getName());
+	            finalList.add(objMap);
+	    	}
 	    	
-	    	section=sectionRepository.save(section);
-	    	
-	    	Map<String, Object> objMap = new LinkedHashMap<String, Object>();
-            objMap.put("id", section.getSectionId());
-            objMap.put("sectionName", section.getName());
-	    	
-	    	return objMap;
+	    	return finalList;
 
 	    }
 }

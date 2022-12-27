@@ -128,10 +128,10 @@ public class FileResource {
     @PostMapping("/addSection")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") "+
     		" || hasAuthority(\"" + AuthoritiesConstants.CLIENT + "\")")
-    public ResponseEntity<Map<String, Object>> createSection (@RequestParam("sectionName") String sectionName,@RequestParam("description")String description,
+    public ResponseEntity<List<Map<String, Object>>> createSection (@RequestParam("sectionName") ArrayList<String> sectionName,@RequestParam("description")String description,
     															@RequestParam("clientId")Long clientId,@RequestParam("staffId")Long staffId) {
     	
-    	Map<String, Object> result = sectionService.createSection(sectionName,description,clientId,staffId);
+    	List<Map<String, Object>> result = sectionService.createSection(sectionName,description,clientId,staffId);
             	
          return ResponseEntity.status(HttpStatus.OK).body(result);
     }
