@@ -132,7 +132,6 @@ public class FileResource {
     															@RequestParam("clientId")Long clientId,@RequestParam("staffId")Long staffId) {
     	
     	Map<String, Object> result = sectionService.createSection(sectionName,description,clientId,staffId);
-
             	
          return ResponseEntity.status(HttpStatus.OK).body(result);
     }
