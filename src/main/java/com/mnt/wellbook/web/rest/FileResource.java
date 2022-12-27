@@ -56,6 +56,7 @@ import com.mnt.wellbook.web.rest.vm.ManagedUserVM;
 import com.mnt.wellbook.repository.KeyRepository;
 
 
+import com.mnt.wellbook.domain.Section;
 import com.mnt.wellbook.domain.Key;
 
 import com.mnt.wellbook.web.rest.errors.InvalidPasswordException;
@@ -67,11 +68,23 @@ import com.mnt.wellbook.domain.Document;
 
 import com.mnt.wellbook.service.IFileSytemStorage;
 
+import com.mnt.wellbook.service.KeyService;
+
+
+import com.mnt.wellbook.service.SectionService;
+
 @RestController
 @RequestMapping("/api")
 public class FileResource {
 	@Autowired
     IFileSytemStorage storageService;
+	
+	@Autowired
+	KeyService keyService;
+	
+	@Autowired
+	SectionService sectionService;
+
 
 	
 	@Value("${jhipster.clientApp.name}")
@@ -109,6 +122,19 @@ public class FileResource {
       return ResponseEntity.ok()
               .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
               .body(resource);
+    }
+    
+    
+    @PostMapping("/addSection")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\") "+
+    		" || hasAuthority(\"" + AuthoritiesConstants.CLIENT + "\")")
+    public ResponseEntity<Map<String, Object>> createSection (@RequestParam("sectionName") String sectionName,@RequestParam("description")String description,
+    															@RequestParam("clientId")Long clientId,@RequestParam("staffId")Long staffId) {
+    	
+    	Map<String, Object> result = sectionService.createSection(sectionName,description,clientId,staffId);
+
+            	
+         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 	
 	

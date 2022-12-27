@@ -47,6 +47,11 @@ public class Section  {
     @JoinColumn(name = "client_id")
     private Client client;
     
+    @ManyToOne( cascade = { CascadeType.PERSIST, CascadeType.MERGE}, targetEntity = Staff.class)
+    @JoinColumn(name = "staff_id")
+    private Staff staff;
+    
+    
     
     public Long getSectionId() {
         return sectionId;
@@ -79,6 +84,14 @@ public class Section  {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+    
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
 

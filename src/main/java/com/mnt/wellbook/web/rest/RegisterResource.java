@@ -88,19 +88,19 @@ public class RegisterResource {
      */
     @PostMapping("/client/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> clientRegister(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    public ResponseEntity<String> clientRegister(@Valid @RequestBody ManagedUserVM managedUserVM) {
     	
     	if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
     	
-    	Key key = keyRepository.findOneByAlphanumericKeyIgnoreCase(managedUserVM.getAlphanumericKey());
+    	Key key = keyRepository.findOneByAlphanumericKeyIgnoreCase(managedUserVM.getKey());
         if(key == null){
             throw new BadRequestAlertException("key not found", "Client", managedUserVM.getEmail().toString());
         }
         
         if(key.getUsedStatus().equals("used")) {
-        	throw new BadRequestAlertException("key already used", "Client", managedUserVM.getAlphanumericKey().toString());
+        	throw new BadRequestAlertException("key already used", "Client", managedUserVM.getKey().toString());
         }
         
         if(!key.getEmail().equals(managedUserVM.getEmail())){
@@ -108,7 +108,8 @@ public class RegisterResource {
         }
         userService.registerClient(managedUserVM, key);
         
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert(applicationName, "Client Register Successfull ", "Client")).build();
+        return ResponseEntity.status(HttpStatus.OK).body("Client Register Successfull ");
+        
 
       
     }
@@ -116,19 +117,19 @@ public class RegisterResource {
     
     @PostMapping("/staff/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> staffRegister(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    public ResponseEntity<String> staffRegister(@Valid @RequestBody ManagedUserVM managedUserVM) {
     	
     	if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
     	
-    	Key key = keyRepository.findOneByAlphanumericKey(managedUserVM.getAlphanumericKey()).get();
+    	Key key = keyRepository.findOneByAlphanumericKey(managedUserVM.getKey()).get();
         if(key == null){
             throw new BadRequestAlertException("key not found", "Staff", managedUserVM.getEmail().toString());
         }
         
         if(key.getUsedStatus().equals("used")) {
-        	throw new BadRequestAlertException("key already used", "Staff", managedUserVM.getAlphanumericKey().toString());
+        	throw new BadRequestAlertException("key already used", "Staff", managedUserVM.getKey().toString());
         }
         
         if(!key.getEmail().equals(managedUserVM.getEmail())){
@@ -136,7 +137,7 @@ public class RegisterResource {
         }
         userService.registerStaff(managedUserVM, key);
 
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert(applicationName, "Staff Register Successfull ", "Staff")).build();
+        return ResponseEntity.status(HttpStatus.OK).body("Staff Register Successfull ");
        
 
     }

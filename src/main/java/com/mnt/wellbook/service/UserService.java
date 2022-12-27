@@ -365,7 +365,7 @@ public class UserService {
             client.setUpdateDatetime(LocalDateTime.now());
             
 //            Notification noti2 = notificationService.saveNotification(client.getId(), client.getUser().getId(), "ROLE_CLIENT", "ROLE_USER", "Successfully Registered", client.getFirstName() +" "+ client.getLastName() +" has been Successfully Registered ");
-            keyService.updateKeyStatus(managedUserVM.getAlphanumericKey());
+            keyService.updateKeyStatus(managedUserVM.getKey());
         });
 
     }
@@ -383,7 +383,7 @@ public class UserService {
         	staff.setUpdateDatetime(LocalDateTime.now());
             
 //            Notification noti2 = notificationService.saveNotification(client.getId(), client.getUser().getId(), "ROLE_CLIENT", "ROLE_USER", "Successfully Registered", client.getFirstName() +" "+ client.getLastName() +" has been Successfully Registered ");
-            keyService.updateKeyStatus(managedUserVM.getAlphanumericKey());
+            keyService.updateKeyStatus(managedUserVM.getKey());
         });
 
     }

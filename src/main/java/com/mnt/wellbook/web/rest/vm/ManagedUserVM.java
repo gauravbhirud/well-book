@@ -17,7 +17,9 @@ public class ManagedUserVM extends AdminUserDTO {
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
     
-    private String alphanumericKey;
+    private String key;
+    
+    private String email;
 
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
@@ -31,13 +33,22 @@ public class ManagedUserVM extends AdminUserDTO {
         this.password = password;
     }
     
-    public String getAlphanumericKey() {
-        return alphanumericKey;
+    public String getKey() {
+        return key;
     }
 
-    public void setAlphanumericKey(String alphanumericKey) {
-        this.alphanumericKey = alphanumericKey;
+    public void setKey(String key) {
+        this.key = key;
     }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
 
     // prettier-ignore
     @Override
